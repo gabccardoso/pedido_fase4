@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GerenciadorAutenticacao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pedido</a> &gt; <a href="index.source.html" class="el_package">com.fiap.pedido.infrastructure.controllers.gerenciadores</a> &gt; <span class="el_source">GerenciadorAutenticacao.java</span></div><h1>GerenciadorAutenticacao.java</h1><pre class="source lang-java linenums">package com.fiap.pedido.infrastructure.controllers.gerenciadores;
+
+
+import com.fiap.pedido.application.useCases.ClientInteractor;
+import com.fiap.pedido.entities.Client;
+import com.fiap.pedido.infrastructure.controllers.dto.ClientDTO;
+import com.fiap.pedido.infrastructure.controllers.dto.ClientDTOMapper;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+@Component
+public class GerenciadorAutenticacao {
+
+    private static final String SECRET_KEY_SESSAO = &quot;humburguer_2024&quot;;
+    private final ClientInteractor clientInteractor;
+    private final ClientDTOMapper clientDTOMapper;
+
+<span class="fc" id="L23">    public GerenciadorAutenticacao(ClientInteractor clientInteractor, ClientDTOMapper clientDTOMapper) {</span>
+<span class="fc" id="L24">        this.clientInteractor = clientInteractor;</span>
+<span class="fc" id="L25">        this.clientDTOMapper = clientDTOMapper;</span>
+<span class="fc" id="L26">    }</span>
+
+    public Long usuarioAutenticado(String token) {
+        try {
+<span class="fc" id="L30">            Claims claims = Jwts.parser()</span>
+<span class="fc" id="L31">                    .setSigningKey(SECRET_KEY_SESSAO.getBytes())</span>
+<span class="fc" id="L32">                    .parseClaimsJws(token)</span>
+<span class="fc" id="L33">                    .getBody();</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">            if (claims.getExpiration().before(new Date())) throw new IllegalArgumentException(&quot;Token inválido&quot;);</span>
+<span class="fc" id="L35">            String cpf = claims.getSubject();</span>
+<span class="fc" id="L36">            String nome = claims.get(&quot;nome&quot;).toString();</span>
+<span class="fc" id="L37">            String email = claims.get(&quot;email&quot;).toString();</span>
+<span class="fc" id="L38">            ClientDTO clientDTO = new ClientDTO();</span>
+<span class="fc" id="L39">            clientDTO.setCpf(cpf);</span>
+<span class="fc" id="L40">            clientDTO.setEmail(email);</span>
+<span class="fc" id="L41">            clientDTO.setNome(nome);</span>
+<span class="fc" id="L42">            return verificaSeUsuarioExiste(clientDTO);</span>
+<span class="fc" id="L43">        } catch (Exception e) {</span>
+<span class="fc" id="L44">            throw e;</span>
+        }
+    }
+
+        public Long verificaSeUsuarioExiste(ClientDTO clientDTO){
+            try {
+<span class="fc" id="L50">                Client client = Optional.ofNullable(clientInteractor.findClientByCPF(clientDTO.getCpf()))</span>
+<span class="pc" id="L51">                        .orElseThrow(() -&gt; new NoSuchElementException(&quot;Cliente não encontrado para o CPF: &quot; + clientDTO.getCpf()));</span>
+<span class="fc" id="L52">                return client.id();</span>
+<span class="fc" id="L53">            } catch (NoSuchElementException e) {</span>
+<span class="fc" id="L54">                Long newClientId = clientInteractor.createClient(clientDTOMapper.toClient(clientDTO));;</span>
+<span class="fc" id="L55">                return newClientId;</span>
+            }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "app-configmap"
+data:
+  SPRING_DATASOURCE_URL: "jdbc:mysql://pedido-rds-instance-one.cuu7ozisxumx.us-east-1.rds.amazonaws.com:3306/pedido"
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: "com.mysql.jdbc.Driver"
+  SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+  SPRING_DATASOURCE_INITIALIZATION_MODE: "always"

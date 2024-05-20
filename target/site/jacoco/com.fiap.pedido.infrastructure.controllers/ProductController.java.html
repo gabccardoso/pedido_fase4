@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pedido</a> &gt; <a href="index.source.html" class="el_package">com.fiap.pedido.infrastructure.controllers</a> &gt; <span class="el_source">ProductController.java</span></div><h1>ProductController.java</h1><pre class="source lang-java linenums">package com.fiap.pedido.infrastructure.controllers;
+
+
+
+import com.fiap.pedido.application.useCases.ProductInteractor;
+import com.fiap.pedido.entities.Product;
+import com.fiap.pedido.infrastructure.controllers.dto.ProductDTO;
+import com.fiap.pedido.infrastructure.controllers.dto.ProductDTOMapper;
+import com.fiap.pedido.infrastructure.controllers.enums.Category;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping(value = &quot;/produto&quot;)
+public class ProductController {
+
+    private final ProductInteractor productInteractor;
+    private final ProductDTOMapper productDTOMapper;
+
+<span class="fc" id="L24">    public ProductController(ProductInteractor productInteractor, ProductDTOMapper productDTOMapper) {</span>
+<span class="fc" id="L25">        this.productInteractor = productInteractor;</span>
+<span class="fc" id="L26">        this.productDTOMapper = productDTOMapper;</span>
+<span class="fc" id="L27">    }</span>
+
+    @GetMapping(value = &quot;buscarProdutoPorCategoria&quot;)
+    public ResponseEntity&lt;List&lt;ProductDTO&gt;&gt; findByCategory(@RequestParam String categoriaBuscada){
+<span class="nc" id="L31">        Category category = Category.valueOf(categoriaBuscada.toUpperCase());</span>
+<span class="nc" id="L32">        List&lt;Product&gt; products = productInteractor.findByCategory(category);</span>
+<span class="nc" id="L33">        List&lt;ProductDTO&gt; productDTOList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if(products.isEmpty()) return ResponseEntity.notFound().build();</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        for(Product product : products){</span>
+<span class="nc" id="L36">            productDTOList.add(productDTOMapper.toProductDTO(product));</span>
+<span class="nc" id="L37">        }</span>
+<span class="nc" id="L38">        return ResponseEntity.ok(productDTOList);</span>
+    }
+
+    @GetMapping(value = &quot;buscarProdutos&quot;)
+    public ResponseEntity&lt;List&lt;ProductDTO&gt;&gt; buscarProdutos(){
+<span class="nc" id="L43">        List&lt;Product&gt; products = productInteractor.findProducts();</span>
+<span class="nc" id="L44">        List&lt;ProductDTO&gt; productDTOList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        for(Product product : products){</span>
+<span class="nc" id="L46">            productDTOList.add(productDTOMapper.toProductDTO(product));</span>
+<span class="nc" id="L47">        }</span>
+<span class="nc" id="L48">        return ResponseEntity.ok(productDTOList);</span>
+    }
+
+    @PutMapping(value = &quot;editarProduto/{id}&quot;)
+    public ResponseEntity&lt;ProductDTO&gt; editarProduto(@RequestBody ProductDTO productDTO, @PathVariable Long id){
+<span class="nc" id="L53">        Product product = productInteractor.editProduct(id, productDTOMapper.toProduct(productDTO));</span>
+<span class="nc" id="L54">        return ResponseEntity.ok(productDTOMapper.toProductDTO(product));</span>
+    }
+
+    @PostMapping(value = &quot;criarProduto&quot;)
+    public ResponseEntity&lt;Long&gt; criarProduto(@RequestBody ProductDTO productDTO){
+<span class="nc" id="L59">        Long id = productInteractor.createProduct(productDTOMapper.toProduct(productDTO));</span>
+<span class="nc" id="L60">        return ResponseEntity.status(HttpStatus.CREATED).body(id);</span>
+    }
+
+    @DeleteMapping(value = &quot;deletarProduto/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; deletarProduto(@PathVariable Long id){
+<span class="nc" id="L65">        productInteractor.deleteProduct(id);</span>
+<span class="nc" id="L66">        return ResponseEntity.noContent().build();</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

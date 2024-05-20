@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClientEntityMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pedido</a> &gt; <a href="index.source.html" class="el_package">com.fiap.pedido.infrastructure.gateways</a> &gt; <span class="el_source">ClientEntityMapper.java</span></div><h1>ClientEntityMapper.java</h1><pre class="source lang-java linenums">package com.fiap.pedido.infrastructure.gateways;
+
+
+import com.fiap.pedido.entities.Client;
+import com.fiap.pedido.infrastructure.persistence.ClientEntity;
+
+<span class="fc" id="L7">public class ClientEntityMapper {</span>
+    ClientEntity toEntity(Client clientObjDomain){
+<span class="fc" id="L9">        return new ClientEntity(clientObjDomain.id(), clientObjDomain.nome(), clientObjDomain.email(), clientObjDomain.cpf());</span>
+    }
+
+    Client toDomainObject(ClientEntity clientEntity){
+<span class="fc" id="L13">        return new Client(clientEntity.getId(), clientEntity.getNome(), clientEntity.getEmail(), clientEntity.getCpf());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

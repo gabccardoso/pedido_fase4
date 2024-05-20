@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pedido</a> &gt; <a href="index.source.html" class="el_package">com.fiap.pedido.infrastructure.controllers</a> &gt; <span class="el_source">OrderController.java</span></div><h1>OrderController.java</h1><pre class="source lang-java linenums">package com.fiap.pedido.infrastructure.controllers;
+
+import com.fiap.pedido.application.useCases.OrderInteractor;
+import com.fiap.pedido.entities.Order;
+import com.fiap.pedido.infrastructure.controllers.dto.OrderDTO;
+import com.fiap.pedido.infrastructure.controllers.dto.OrderDTOMapper;
+import com.fiap.pedido.infrastructure.controllers.gerenciadores.GerenciadorAutenticacao;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping(value = &quot;/pedido&quot;)
+public class OrderController {
+
+    private final OrderInteractor orderInteractor;
+    private final OrderDTOMapper orderDTOMapper;
+    private final GerenciadorAutenticacao gerenciadorAutenticacao;
+
+<span class="fc" id="L23">    public OrderController(OrderInteractor orderInteractor, OrderDTOMapper orderDTOMapper, GerenciadorAutenticacao gerenciadorAutenticacao) {</span>
+<span class="fc" id="L24">        this.orderInteractor = orderInteractor;</span>
+<span class="fc" id="L25">        this.orderDTOMapper = orderDTOMapper;</span>
+<span class="fc" id="L26">        this.gerenciadorAutenticacao = gerenciadorAutenticacao;</span>
+<span class="fc" id="L27">    }</span>
+
+    @GetMapping(value = &quot;buscarPedidos&quot;)
+    public ResponseEntity&lt;List&lt;OrderDTO&gt;&gt; buscarPedidos(){
+<span class="fc" id="L31">        List&lt;Order&gt; orders = orderInteractor.findOrders();</span>
+<span class="fc" id="L32">        List&lt;OrderDTO&gt; ordersDTO = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        for(Order order : orders){</span>
+<span class="fc" id="L34">            ordersDTO.add(orderDTOMapper.toOrderDTO(order));</span>
+<span class="fc" id="L35">        }</span>
+<span class="fc" id="L36">        return ResponseEntity.ok(ordersDTO);</span>
+    }
+
+    @PostMapping(value = &quot;criarPedido&quot;)
+    public ResponseEntity&lt;Long&gt; criarPedido(@RequestBody OrderDTO orderDTO, @RequestHeader(value = &quot;token&quot;, required = false) String token){
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        Long clientId = token != null ? gerenciadorAutenticacao.usuarioAutenticado(token) : null;</span>
+<span class="fc" id="L42">        orderDTO.setClientId(clientId);</span>
+<span class="fc" id="L43">        Long orderId = orderInteractor.createOrder(orderDTOMapper.toOrder(orderDTO));</span>
+<span class="fc" id="L44">        return ResponseEntity.ok(orderId);</span>
+    }
+
+    @PostMapping(value = &quot;adicionarItens/{pedidoId}&quot;)
+    public ResponseEntity&lt;OrderDTO&gt; adicionarItensAoPedido(@PathVariable Long pedidoId, @RequestBody Map&lt;Long, Integer&gt; itensPedido) {
+<span class="fc" id="L49">        Order order = orderInteractor.updateOrderItens(pedidoId, itensPedido);</span>
+<span class="fc" id="L50">        return ResponseEntity.ok(orderDTOMapper.toOrderDTO(order));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

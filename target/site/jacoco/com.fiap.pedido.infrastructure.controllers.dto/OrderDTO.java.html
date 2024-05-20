@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pedido</a> &gt; <a href="index.source.html" class="el_package">com.fiap.pedido.infrastructure.controllers.dto</a> &gt; <span class="el_source">OrderDTO.java</span></div><h1>OrderDTO.java</h1><pre class="source lang-java linenums">package com.fiap.pedido.infrastructure.controllers.dto;
+
+
+import java.util.Date;
+import java.util.List;
+
+public class OrderDTO {
+
+    private Long clientId;
+    private Date dataCriacao;
+    private List&lt;OrderItensDTO&gt; orderItens;
+
+<span class="fc" id="L13">    public OrderDTO(Long clientId, Date dataCriacao, List&lt;OrderItensDTO&gt; orderItens) {</span>
+<span class="fc" id="L14">        this.clientId = clientId;</span>
+<span class="fc" id="L15">        this.dataCriacao = dataCriacao;</span>
+<span class="fc" id="L16">        this.orderItens = orderItens;</span>
+<span class="fc" id="L17">    }</span>
+
+    public Long getClientId() {
+<span class="fc" id="L20">        return clientId;</span>
+    }
+
+    public void setClientId(Long clientId) {
+<span class="fc" id="L24">        this.clientId = clientId;</span>
+<span class="fc" id="L25">    }</span>
+
+    public Date getDataCriacao() {
+<span class="fc" id="L28">        return dataCriacao;</span>
+    }
+
+    public void setDataCriacao(Date dataCriacao) {
+<span class="nc" id="L32">        this.dataCriacao = dataCriacao;</span>
+<span class="nc" id="L33">    }</span>
+
+    public List&lt;OrderItensDTO&gt; getOrderItens() {
+<span class="fc" id="L36">        return orderItens;</span>
+    }
+
+    public void setOrderItens(List&lt;OrderItensDTO&gt; orderItens) {
+<span class="nc" id="L40">        this.orderItens = orderItens;</span>
+<span class="nc" id="L41">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

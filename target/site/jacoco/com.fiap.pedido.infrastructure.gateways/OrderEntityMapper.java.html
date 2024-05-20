@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderEntityMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pedido</a> &gt; <a href="index.source.html" class="el_package">com.fiap.pedido.infrastructure.gateways</a> &gt; <span class="el_source">OrderEntityMapper.java</span></div><h1>OrderEntityMapper.java</h1><pre class="source lang-java linenums">package com.fiap.pedido.infrastructure.gateways;
+
+import com.fiap.pedido.entities.Order;
+import com.fiap.pedido.entities.OrderItens;
+import com.fiap.pedido.infrastructure.persistence.OrderEntity;
+import com.fiap.pedido.infrastructure.persistence.OrderItensEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="fc" id="L11">public class OrderEntityMapper {</span>
+    public OrderEntity toEntity(Order orderObjDomain){
+<span class="fc" id="L13">        return new OrderEntity(orderObjDomain.clientId(), toOrderItensListEntity(orderObjDomain.orderItens()));</span>
+    }
+
+    public Order toDomainObject(OrderEntity orderEntity){
+<span class="fc" id="L17">        return new Order(orderEntity.getClientId(), orderEntity.getDataCriacao(), toOrderItensList(orderEntity.getItens()));</span>
+    }
+
+    public List&lt;OrderItens&gt; toOrderItensList(List&lt;OrderItensEntity&gt; orderItensEntities) {
+<span class="fc" id="L21">        List&lt;OrderItens&gt; orderItensList = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        for (OrderItensEntity orderItensEntity : orderItensEntities) {</span>
+<span class="fc" id="L23">            orderItensList.add(new OrderItens(orderItensEntity.getProductId(), orderItensEntity.getQuantity(), orderItensEntity.getOrderId()));</span>
+<span class="fc" id="L24">        }</span>
+<span class="fc" id="L25">        return orderItensList;</span>
+    }
+
+    public List&lt;OrderItensEntity&gt; toOrderItensListEntity(List&lt;OrderItens&gt; orderItens) {
+<span class="fc" id="L29">        List&lt;OrderItensEntity&gt; orderItensEntityList = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        for (OrderItens orderItem : orderItens) {</span>
+<span class="fc" id="L31">            orderItensEntityList.add(new OrderItensEntity(orderItem.product(), orderItem.quantity(), orderItem.order()));</span>
+<span class="fc" id="L32">        }</span>
+<span class="fc" id="L33">        return orderItensEntityList;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

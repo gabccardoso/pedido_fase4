@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pedido</a> &gt; <a href="index.source.html" class="el_package">com.fiap.pedido.main</a> &gt; <span class="el_source">OrderConfig.java</span></div><h1>OrderConfig.java</h1><pre class="source lang-java linenums">package com.fiap.pedido.main;
+
+import com.fiap.pedido.application.gateways.OrderGateway;
+import com.fiap.pedido.application.useCases.OrderInteractor;
+import com.fiap.pedido.infrastructure.controllers.dto.OrderDTOMapper;
+import com.fiap.pedido.infrastructure.gateways.OrderEntityMapper;
+import com.fiap.pedido.infrastructure.gateways.OrderRepositoryGateway;
+import com.fiap.pedido.infrastructure.persistence.OrderItensRepository;
+import com.fiap.pedido.infrastructure.persistence.OrderRepository;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+<span class="fc" id="L14">public class OrderConfig {</span>
+
+    @Bean
+    OrderInteractor orderInteractor(OrderGateway orderGateway){
+<span class="fc" id="L18">        return new OrderInteractor(orderGateway);</span>
+    }
+
+    @Bean
+    OrderGateway orderGateway(OrderRepository orderRepository, OrderItensRepository orderItensRepository, OrderEntityMapper orderEntityMapper){
+<span class="fc" id="L23">        return new OrderRepositoryGateway(orderRepository, orderItensRepository, orderEntityMapper);</span>
+    }
+
+    @Bean
+    OrderEntityMapper orderEntityMapper(){
+<span class="fc" id="L28">        return new OrderEntityMapper();</span>
+    }
+
+    @Bean
+    OrderDTOMapper orderDTOMapper(){
+<span class="fc" id="L33">        return new OrderDTOMapper();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

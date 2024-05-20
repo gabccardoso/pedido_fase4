@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductRepositoryGateway.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pedido</a> &gt; <a href="index.source.html" class="el_package">com.fiap.pedido.infrastructure.gateways</a> &gt; <span class="el_source">ProductRepositoryGateway.java</span></div><h1>ProductRepositoryGateway.java</h1><pre class="source lang-java linenums">package com.fiap.pedido.infrastructure.gateways;
+
+
+import com.fiap.pedido.application.gateways.ProductGateway;
+import com.fiap.pedido.entities.Product;
+import com.fiap.pedido.infrastructure.controllers.enums.Category;
+import com.fiap.pedido.infrastructure.persistence.ProductEntity;
+import com.fiap.pedido.infrastructure.persistence.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class ProductRepositoryGateway implements ProductGateway {
+
+  private final ProductRepository productRepository;
+  private final ProductEntityMapper productEntityMapper;
+
+<span class="fc" id="L20">    public ProductRepositoryGateway(ProductRepository productRepository, ProductEntityMapper productEntityMapper) {</span>
+<span class="fc" id="L21">        this.productRepository = productRepository;</span>
+<span class="fc" id="L22">        this.productEntityMapper = productEntityMapper;</span>
+<span class="fc" id="L23">    }</span>
+
+
+    @Override
+    public List&lt;Product&gt; findByCategory(Category category) {
+<span class="fc" id="L28">        List&lt;ProductEntity&gt; productsEntity = productRepository.findByCategory(category);</span>
+<span class="fc" id="L29">        List&lt;Product&gt; products = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">        for(ProductEntity productEntity : productsEntity){</span>
+<span class="nc" id="L31">            products.add(productEntityMapper.toObjDomain(productEntity));</span>
+<span class="nc" id="L32">        }</span>
+<span class="fc" id="L33">        return products;</span>
+    }
+
+    @Override
+    public Long createProduct(Product product) {
+<span class="fc" id="L38">        ProductEntity productEntity = productEntityMapper.toEntity(product);</span>
+<span class="fc" id="L39">        productRepository.save(productEntity);</span>
+<span class="fc" id="L40">        return productEntity.getId();</span>
+    }
+
+    @Override
+    public Product editProduct(Long id, Product product) {
+<span class="fc" id="L45">        ProductEntity productEntity = productRepository.findById(id).orElseThrow(EntityNotFoundException::new);</span>
+<span class="fc" id="L46">        ProductEntity newProduct = productEntityMapper.toEntity(product);</span>
+
+<span class="fc" id="L48">        productEntity.setCategory(newProduct.getCategory());</span>
+<span class="fc" id="L49">        productEntity.setDescription(newProduct.getDescription());</span>
+<span class="fc" id="L50">        productEntity.setName(newProduct.getName());</span>
+<span class="fc" id="L51">        productEntity.setImage(newProduct.getImage());</span>
+<span class="fc" id="L52">        productEntity.setPrice(newProduct.getPrice());</span>
+
+<span class="fc" id="L54">        productRepository.save(productEntity);</span>
+<span class="fc" id="L55">        return productEntityMapper.toObjDomain(productEntity);</span>
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+<span class="fc" id="L60">        productRepository.deleteById(id);</span>
+<span class="fc" id="L61">    }</span>
+
+    @Override
+    public List&lt;Product&gt; findProducts() {
+<span class="fc" id="L65">        List&lt;ProductEntity&gt; productEntityList = productRepository.findAll();</span>
+<span class="fc" id="L66">        List&lt;Product&gt; products = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">        for(ProductEntity productEntity : productEntityList){</span>
+<span class="nc" id="L68">            products.add(productEntityMapper.toObjDomain(productEntity));</span>
+<span class="nc" id="L69">        }</span>
+<span class="fc" id="L70">        return  products;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
