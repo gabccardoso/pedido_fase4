@@ -27,7 +27,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
 
-
     - name: Analyze with SonarCloud
       run: ./mvnw -B verify sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=gabccardoso -Dsonar.projectKey=gabccardoso_pedido_fase4 -Dsonar.login=$SONAR_TOKEN
       env:
