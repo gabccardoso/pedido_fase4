@@ -8,7 +8,7 @@ Aqui ficam os cadastros dos pedidos e produtos.
 
 Para rodar a aplicação localmente, rode o comando './roda_spring_normal.sh' na raíz do projeto.
 
-Caso queira rodar na nuvem usando kubernetes, rode terraform apply no repositório terraform-eks para criar as instâncias EKS, 
+Caso queira rodar na nuvem usando kubernetes, rode terraform apply no repositório terraform-app para criar as instâncias EKS, 
 e rode os arquivos yaml do kubernetes presentes neste projeto dentro da instância.
 
 ## Verificando cobertura de testes
